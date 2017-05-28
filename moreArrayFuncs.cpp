@@ -148,6 +148,8 @@ int copyOddOnly(int *dest, int *src, int n) {
 // product will be {3,10,21,36}.
 
 void multiplyPairwise(int *a, int *b, int *product, int n) {
-  // STUB; fix this
+	for(int i = 0; i<n;i++){
+		product[i]= a[i]*b[i];
+	}
 }
 
