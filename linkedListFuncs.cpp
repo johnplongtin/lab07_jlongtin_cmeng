@@ -8,6 +8,14 @@
 #include "linkedListFuncs.h"
 
 
+// Pre-condition:'a' is a valid array with 
+// zero or more elements, specified by 'size'
+// Post-condition: A linked-list with 'size' number of nodes
+// If size is zero, a valid 'empty' list is returned
+
+
+
+
 
 LinkedList * arrayToLinkedList(int *a, int size) {
   
@@ -45,6 +53,9 @@ std::string intToString(int i) {
   return oss.str(); // return the string result
 }
 
+// Precondition: A valid array 'a' with non-negative size
+// Postcondition: A string representation of the elements of the array
+
 std::string arrayToString(int a[], int size) {
 
   std::ostringstream oss;
@@ -66,6 +77,9 @@ std::string arrayToString(int a[], int size) {
 
 // free up every node on this linked list
 // nice clean code thanks to @sashavolv2 (on Twitter) #woot
+// Precondition: A valid linked-list on heap memory
+// Postcondition: Every element of the linked-list is deleted
+// The list structure is also deleted
 
 void freeLinkedList(LinkedList * list) {
 
@@ -79,6 +93,11 @@ void freeLinkedList(LinkedList * list) {
   delete list; // returns memory to the heap (freestore)
 }
 
+// Precondition: A valid linked-list on heap memory, which
+// may be possibly empty
+// Postcondition: Returns a string representation of the elements
+// of the linked-list
+
 std::string linkedListToString(LinkedList *list) {
 
   std::string result="";
@@ -89,15 +108,21 @@ std::string linkedListToString(LinkedList *list) {
   return result;
 }
 
+// Precondition: A valid linked-list that may possibly be empty
+// and an integer value
+// Postcondition: A new node with provided value is added to the 
+// the end of the list. The head and tail pointers are appropriately 
+// updated
 void addIntToEndOfList(LinkedList *list, int value) {
   assert(list!=NULL); // if list is NULL, we can do nothing.
 
   Node *p; // temporary pointer
 
-  // TODO:
+  p = new Node;
   // (1) Allocate a new node.  p will point to it.
 
-  p = NULL; // THIS IS PLACE-HOLDER LINE OF CODE.  DELETE IT AND REPLACE IT.
+  p->data = value;
+  p->next = NULL;
 
   // (2) Set p's data field to the value passed in
   
@@ -106,10 +131,16 @@ void addIntToEndOfList(LinkedList *list, int value) {
 
   if (list->head == NULL) {
 
+	list->head = p;
+	list->tail = p;
     // (4) Make both head and tail of this list point to p
     
     
   } else {
+      list->tail->next = p;
+      list->tail = list->tail->next;
+      list->tail->next = NULL;
+      list->tail->data = p->data;
 
     // Add p at the end of the list.   
 
@@ -121,19 +152,43 @@ void addIntToEndOfList(LinkedList *list, int value) {
 
 }
 
+// Precondition: A valid linked-list on the heap and an integer value
+// Postcondition: A new node is created with provided value and is
+// added to the start of the list. The head and tail pointers are 
+// appropriately updated
 void addIntToStartOfList(LinkedList *list, int value) {
   assert(list!=NULL); // if list is NULL, we can do nothing.
+   Node *p; // temporary pointer
 
+  p = new Node;
+  // (1) Allocate a new node.  p will point to it.
+ 
+
+  p->data = value;
+  p->next = list->head;
+
+if (list->head == NULL) {
+
+        list->head = p;
+        list->tail = p;
+    // (4) Make both head and tail of this list point to p
+    
+      } else {
+         list->head = p;
+}
+}
   // Add code for this.  
   // HINTS:
   //  You will need to allocate a new Node.
   //  You will need two cases just as in addIntToEndOfList,
   //  one for when list->head is NULL and another for when it is not.
-  // You need to consider how to make sure that list->head changes to point to the new node
-  // that you allocated.  And you will need to make sure that when you are done, 
-  // that if the new node is now the ONLY thing on the list, that tail points to it also,
-  // and that the new node is pointing to NULL.
-  // Otherwise, you'll need to be sure that 
-  //   if it is the only node on the list, or to the "old" head if there 
-
-}
+  // You need to consider how to make sure that list->head 
+  //   so that it points to the new node that you allocated.  
+  // And you will need to make sure that when you are done, 
+  //   that if the new node is now the ONLY thing on the list, 
+  //   that tail points to it also,
+  //   and that the new node is pointing to NULL.
+  // Otherwise, you'll need to be sure that when you are done
+  //   the head points to the new node you added, and that
+  //   the new node points to the node that *used* to be the head.
+  // The order in which you do things matters
